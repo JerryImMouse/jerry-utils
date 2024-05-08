@@ -16,7 +16,6 @@ public class ReflectionManager
                 return _instance;
             
             _instance = new ReflectionManager();
-            _instance.LoadAssemblies(new []{Assembly.GetEntryAssembly() ?? Assembly.GetCallingAssembly()});
             return _instance;
 
         }
