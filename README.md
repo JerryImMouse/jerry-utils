@@ -29,5 +29,5 @@ Uses simple Dicionary type to store dependency types and their instances.<br/>
 Created to replace FrozenDictionary because of high speed of adding items.
 
 
-### Disclaimer
+## Disclaimer
 If someone found this repository and he found this useless or shitty wrote for himself, please remember its a personal use pack, i posted it here to easily copy and paste into my **own** projects.
