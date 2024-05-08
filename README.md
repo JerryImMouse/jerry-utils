@@ -10,7 +10,7 @@ Currently it contains:
 > All this utilities depends on each other, so make sure you copied all parts of this pack into your project.
 
 ## Inversion of Control realization
-IoC manager built with two simple DependencyContainers which inherits IDependencyCollection interface, so you can
+IoC manager built with three simple DependencyContainers which inherits IDependencyCollection interface, so you can
 choose what realization you need to use in your case. Also provided simple IoCManager to retrieve or inject dependencies into DependencyCollection.
 
 Currently there are two realizations of IDependencyCollection interface:
