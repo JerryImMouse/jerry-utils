@@ -31,7 +31,7 @@ Created to replace FrozenDictionary because of high speed of adding items.
 
 ### ReferencedDependencyCollection
 Uses FrozenDictionary to store dependency types and instances, BUT it index its values, so if you need to get value by type it can be easily indexed.
-To look at its realization you can check DepIdx.cs file in Referenced folder
+If you want to know more you can checkout its realization [here](https://github.com/JerryImMouse/jerry-utils/blob/master/Project.Utilities/IoC/Referenced/DepIdx.cs)
 
 ## Disclaimer
 If someone found this repository and he found this useless or shitty wrote for himself, please remember its a personal use pack, i posted it here to easily copy and paste into my **own** projects.
