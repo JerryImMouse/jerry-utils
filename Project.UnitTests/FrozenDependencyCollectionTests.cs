@@ -18,6 +18,14 @@ public class FrozenDependencyCollectionTests
     {
         
     }
+    class DependencyTestClass1Unreg
+    {
+        
+    }
+    class DependencyTestClass2Unreg
+    {
+        
+    }
     [SetUp]
     public void Setup()
     {
@@ -26,6 +34,19 @@ public class FrozenDependencyCollectionTests
             { typeof(DependencyTestClass1), new DependencyTestClass1() },
         };
         _frozenCollection = (FrozenDependencyCollection)FrozenDependencyCollection.InitializeDependencies(dict);
+    }
+
+    [Test]
+    public void InjectMultiple()
+    {
+        var dict = new Dictionary<Type, object>()
+        {
+            {typeof(DependencyTestClass1Unreg), new DependencyTestClass1Unreg()},
+            {typeof(DependencyTestClass2Unreg), new DependencyTestClass2Unreg()},
+        };
+        _frozenCollection.InjectDependencies(dict, true);
+        var deps = _frozenCollection.EnumerateDependencies();
+        Debug.Assert(deps.Count() == 3);
     }
 
     [Test]
