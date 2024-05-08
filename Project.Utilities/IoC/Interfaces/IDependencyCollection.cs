@@ -1,6 +1,6 @@
 ﻿using System.Diagnostics.CodeAnalysis;
 
-namespace Jerry.Utilities.IoC.Interfaces;
+namespace Project.Utilities.IoC.Interfaces;
 
 public interface IDependencyCollection
 {

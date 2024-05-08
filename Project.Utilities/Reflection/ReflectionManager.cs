@@ -1,7 +1,7 @@
 ﻿using System.Reflection;
-using Jerry.Utilities.Utility;
+using Project.Utilities.Utility;
 
-namespace Jerry.Utilities.Reflection;
+namespace Project.Utilities.Reflection;
 
 public class ReflectionManager
 {

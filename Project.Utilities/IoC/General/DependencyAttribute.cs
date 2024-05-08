@@ -1,4 +1,4 @@
-﻿namespace Jerry.Utilities.IoC.General;
+﻿namespace Project.Utilities.IoC.General;
 
 /// <summary>
 /// Mark fields with this attribute to inject dependencies automatically

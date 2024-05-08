@@ -1,9 +1,8 @@
 ﻿using System.Reflection;
-using Jerry.Utilities.IoC.Default;
-using Jerry.Utilities.IoC.Frozen;
-using Jerry.Utilities.IoC.General;
+using Project.Utilities.IoC.Frozen;
+using Project.Utilities.IoC.General;
 
-namespace Jerry.Utilities.Examples.IoCExample;
+namespace Project.Utilities.Examples.IoCExample;
 
 public class BaseEntryPoint
 {

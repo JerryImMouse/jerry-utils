@@ -1,7 +1,7 @@
 ﻿using System.Diagnostics.CodeAnalysis;
 using System.Reflection;
 
-namespace Jerry.Utilities.Utility;
+namespace Project.Utilities.Utility;
 
 /// <summary>
 /// Collection of methods to extend <see cref="Type"/> class

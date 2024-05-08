@@ -1,7 +1,7 @@
 ﻿using System.Diagnostics.CodeAnalysis;
 using System.Runtime.InteropServices;
 
-namespace Jerry.Utilities.Utility;
+namespace Project.Utilities.Utility;
 
 /// <summary>
 /// Collection of methods to extend <see cref="List{T}"/>, <see cref="Dictionary{TKey,TValue}"/>, <see cref="Array"/> etc.

@@ -1,9 +1,9 @@
 ﻿using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
-using Jerry.Utilities.IoC.Interfaces;
-using Jerry.Utilities.Utility;
+using Project.Utilities.IoC.Interfaces;
+using Project.Utilities.Utility;
 
-namespace Jerry.Utilities.IoC.Default;
+namespace Project.Utilities.IoC.Default;
 
 /// <summary>
 /// Simple container that uses usual <see cref="Dictionary{TKey,TValue}"/>

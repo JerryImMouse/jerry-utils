@@ -1,4 +1,4 @@
-﻿namespace Jerry.Utilities.Examples.IoCExample;
+﻿namespace Project.Utilities.Examples.IoCExample;
 
 public class InheritorDependency
 {

@@ -1,9 +1,9 @@
 ﻿using System.Collections.Frozen;
 using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
-using Jerry.Utilities.IoC.Interfaces;
+using Project.Utilities.IoC.Interfaces;
 
-namespace Jerry.Utilities.IoC.Frozen;
+namespace Project.Utilities.IoC.Frozen;
 
 /// <summary>
 /// Faster in search, but MUCH slower when you need to add something.<br/><br/>

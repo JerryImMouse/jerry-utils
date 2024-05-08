@@ -1,4 +1,4 @@
-﻿namespace Jerry.Utilities.IoC.General;
+﻿namespace Project.Utilities.IoC.General;
 
 /// <summary>
 /// Mark classes with this attribute to automatically register them in IoC on launch

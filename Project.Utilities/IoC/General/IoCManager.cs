@@ -1,12 +1,12 @@
 ﻿using System.Diagnostics.CodeAnalysis;
 using System.Reflection;
-using Jerry.Utilities.IoC.Frozen;
-using Jerry.Utilities.IoC.Interfaces;
-using Jerry.Utilities.Reflection;
-using Jerry.Utilities.TypeFactory;
-using Jerry.Utilities.Utility;
+using Project.Utilities.IoC.Frozen;
+using Project.Utilities.IoC.Interfaces;
+using Project.Utilities.Reflection;
+using Project.Utilities.TypeFactory;
+using Project.Utilities.Utility;
 
-namespace Jerry.Utilities.IoC.General;
+namespace Project.Utilities.IoC.General;
 
 /// <summary>
 /// Main IoC class which registers, injects, and resolves dependencies inside <see cref="IDependencyCollection"/>s

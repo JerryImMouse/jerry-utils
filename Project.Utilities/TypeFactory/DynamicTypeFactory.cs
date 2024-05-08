@@ -1,6 +1,6 @@
-﻿using Jerry.Utilities.IoC.General;
+﻿using Project.Utilities.IoC.General;
 
-namespace Jerry.Utilities.TypeFactory;
+namespace Project.Utilities.TypeFactory;
 
 /// <summary>
 /// Instantiates new instances of types, also can register them in IoCManager automatically
