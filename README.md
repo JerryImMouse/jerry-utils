@@ -5,7 +5,8 @@ Currently it contains:
 - **Simple Dynamic type factory**
 - **Simple reflection manager**
 - **TypeHelpers, CollectionExtensions**
-
+> **Note**<br/>
+> All this utilities depends on each other, so make sure you copied all parts of this pack into your project.
 
 
 ## Inversion of Control realization
