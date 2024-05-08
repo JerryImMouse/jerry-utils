@@ -13,7 +13,7 @@ Currently it contains:
 IoC manager built with three simple DependencyContainers which inherits IDependencyCollection interface, so you can
 choose what realization you need to use in your case. Also provided simple IoCManager to retrieve or inject dependencies into DependencyCollection.
 
-Currently there are two realizations of IDependencyCollection interface:
+Currently there are three realizations of IDependencyCollection interface:
 - [FrozenDependencyCollection](#frozendependencycollection)
 - [DependencyCollection](#dependencycollection)
 - [ReferencedDependencyCollection](#referenceddependencycollection)
