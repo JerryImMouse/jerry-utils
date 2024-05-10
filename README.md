@@ -7,12 +7,16 @@ Currently it contains:
 - **Simple reflection manager**
 - **TypeHelpers, CollectionExtensions**
 - **MathHelper, LockUtilities**
-> **Note**<br/>
+> ### Important Note<br/>
 > All this utilities depends on each other, so make sure you copied all parts of this pack into your project.
 
 ## Inversion of Control realization
 IoC manager built with three simple DependencyContainers which inherits IDependencyCollection interface, so you can
 choose what realization you need to use in your case. Also provided simple IoCManager to retrieve or inject dependencies into DependencyCollection.
+> ### Important Note<br>
+> IoCManager is being built using IoCManagerBuilder class, in coupe with InitializeDependencies method
+> So you need to build settings with builder and pass them into InitializeDependencies method
+
 
 Currently there are three realizations of IDependencyCollection interface:
 - [FrozenDependencyCollection](#frozendependencycollection)
