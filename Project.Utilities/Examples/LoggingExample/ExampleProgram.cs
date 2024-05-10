@@ -10,6 +10,7 @@ public static class ExampleProgram
     private static Logger _logger = default!;
     public static void Main(string[] args)
     {
+        // getting logger instance using static method GetLogger, don't create it straightly
         // here "program" means this logger is working inside our program class
         // this name can be whatever you want user to see inside logs, this will be like
         // [INFO] program: Log text

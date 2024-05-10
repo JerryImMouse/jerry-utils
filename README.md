@@ -2,6 +2,7 @@
 Its a pack of utilities created for [personal](#disclaimer) use.
 Currently it contains:
 - **[IoC realization](#inversion-of-control-realization)**
+- **[Logging](#logging)**
 - **Simple Dynamic type factory**
 - **Simple reflection manager**
 - **TypeHelpers, CollectionExtensions**
@@ -32,6 +33,9 @@ Created to replace FrozenDictionary because of high speed of adding items.
 ### ReferencedDependencyCollection
 Uses FrozenDictionary to store dependency types and instances, BUT it index its values, so if you need to get value by type it can be easily indexed.
 If you want to know more you can checkout its realization [here](https://github.com/JerryImMouse/jerry-utils/blob/master/Project.Utilities/IoC/Referenced/DepIdx.cs)
+
+## Logging
+This pack includes "advanced" logging system with ANSI colors for windows consoles and colorless if linux. Also supports logging straight to files, you can specify which handler to use by HandlerFlags enum.<br> If you want to know how to use it look [here](https://github.com/JerryImMouse/jerry-utils/blob/master/Project.Utilities/Examples/LoggingExample/ExampleProgram.cs)
 
 ## Disclaimer
 If someone found this repository and he found this useless or shitty wrote for himself, please remember its a personal use pack, i posted it here to easily copy and paste into my **own** projects.
