@@ -1,5 +1,5 @@
 # jerry-utils
-Its a pack of utilities created for [personal](#disclaimer) use.
+Its a pack of utilities created for personal use.
 Currently it contains:
 - **[IoC realization](#inversion-of-control-realization)**
 - **[Logging](#logging)**
@@ -16,7 +16,7 @@ choose what realization you need to use in your case. Also provided simple IoCMa
 You can find its realization [here](https://github.com/JerryImMouse/jerry-utils/blob/master/Project.Utilities/IoC/General/IoCManager.cs)
 > ### Important Note<br>
 > IoCManager is being built using IoCManagerBuilder class, in coupe with InitializeDependencies method
-> So you need to build settings with builder and pass them into InitializeDependencies method
+> So you need to build settings with builder and [README.md](README.md)pass them into InitializeDependencies method
 
 
 Currently there are three realizations of IDependencyCollection interface:
@@ -43,5 +43,3 @@ If you want to know more you can checkout its realization [here](https://github.
 ## Logging
 This pack includes "advanced" logging system with ANSI colors for windows consoles and colorless if linux. Also supports logging straight to files, you can specify which handler to use by HandlerFlags enum.<br> If you want to know how to use it look [here](https://github.com/JerryImMouse/jerry-utils/blob/master/Project.Utilities/Examples/LoggingExample/ExampleProgram.cs)<br>
 [Logger Realization](https://github.com/JerryImMouse/jerry-utils/blob/master/Project.Utilities/Logging/Logger.cs)
-## Disclaimer
-If someone found this repository and he found this useless or shitty wrote for himself, please remember its a personal use pack, i posted it here to easily copy and paste into my **own** projects.
