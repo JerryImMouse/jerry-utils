@@ -1,9 +1,6 @@
 ﻿using System.Reflection;
 using Project.Utilities.IoC.Frozen;
 using Project.Utilities.IoC.General;
-using Project.Utilities.Logging;
-using Project.Utilities.Logging.Handlers;
-using Project.Utilities.Logging.LogStructs;
 
 namespace Project.Utilities.Examples.IoCExample;
 

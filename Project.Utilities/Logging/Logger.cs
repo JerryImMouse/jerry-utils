@@ -1,6 +1,4 @@
-﻿using Project.Utilities.IoC.General;
-using Project.Utilities.Logging.Handlers;
-using Project.Utilities.Logging.Interfaces;
+﻿using Project.Utilities.Logging.Interfaces;
 using Project.Utilities.Logging.LogStructs;
 using Serilog;
 using Serilog.Events;

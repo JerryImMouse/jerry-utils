@@ -1,5 +1,4 @@
-﻿using Project.Utilities.Logging.LogStructs;
-using Serilog.Events;
+﻿using Serilog.Events;
 
 namespace Project.Utilities.Logging.Interfaces;
 
