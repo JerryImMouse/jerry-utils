@@ -180,7 +180,6 @@ public class Logger : IDisposable
 
     public void Dispose()
     {
-        Console.WriteLine("logger disposed");
         _handlersLock.EnterWriteLock();
         try
         {
