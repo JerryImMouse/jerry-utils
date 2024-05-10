@@ -14,7 +14,12 @@ public class IoCManagerFrozenInheritors
     public void SetUp()
     {
         ReflectionManager.Instance.LoadAssemblies([Assembly.GetExecutingAssembly()]);
-        IoCManager.RegisterDependenciesInherits<FrozenDependencyCollection>(typeof(InheritorDependency), true);
+        var settings = new IoCManagerBuilder()
+            .WithMode(IoCMode.Inheritor)
+            .WithInheritor<InheritorDependency>()
+            .WithRegisterInheritor(true)
+            .Build();
+        IoCManager.InitializeDependencies<FrozenDependencyCollection>(settings);
     }
     
     [Test]

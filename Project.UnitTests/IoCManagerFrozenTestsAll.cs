@@ -13,7 +13,13 @@ public class IoCManagerFrozenTestsAll
     public void SetUp()
     {
         ReflectionManager.Instance.LoadAssemblies([Assembly.GetExecutingAssembly()]);
-        IoCManager.RegisterAllDependencies<RegisterDependencyAttribute, FrozenDependencyCollection>([Assembly.GetAssembly(typeof(IoCManagerFrozenTestsAll))], typeof(InheritorDependency), true);
+        var settings = new IoCManagerBuilder()
+            .WithMode(IoCMode.All)
+            .WithAttribute<RegisterDependencyAttribute>()
+            .WithInheritor<InheritorDependency>()
+            .WithRegisterInheritor(true)
+            .Build();
+        IoCManager.InitializeDependencies<FrozenDependencyCollection>(settings);
     }
 
     [Test]

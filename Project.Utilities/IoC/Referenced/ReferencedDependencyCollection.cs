@@ -30,7 +30,7 @@ public class ReferencedDependencyCollection : IDependencyCollection
         return GetDependency(typeof(T));
     }
 
-    public void InjectDependencies(Dictionary<Type, object> dict, bool logTime = false)
+    public void InjectDependencies(Dictionary<Type, object> dict)
     {
         var ourDict = _dependencies.ToDictionary();
         foreach (var kvp in dict)
@@ -42,7 +42,7 @@ public class ReferencedDependencyCollection : IDependencyCollection
         _dependencies = ourDict.ToFrozenDictionary();
     }
 
-    public void InjectDependency(Type t, object instance, bool logTime = false)
+    public void InjectDependency(Type t, object instance)
     {
         var ourDict = _dependencies.ToDictionary();
         var idx = DepIdx.Index(t);
@@ -51,7 +51,7 @@ public class ReferencedDependencyCollection : IDependencyCollection
         _dependencies = ourDict.ToFrozenDictionary();
     }
 
-    public void InjectDependency<T>(object instance, bool logTime = false)
+    public void InjectDependency<T>(object instance)
     {
         InjectDependency(typeof(T), instance);
     }
@@ -64,7 +64,7 @@ public class ReferencedDependencyCollection : IDependencyCollection
         }
     }
 
-    public static IDependencyCollection InitializeDependencies(Dictionary<Type, object> dict, bool logTime = false)
+    public static IDependencyCollection InitializeDependencies(Dictionary<Type, object> dict)
     {
         return new ReferencedDependencyCollection(dict);
     }

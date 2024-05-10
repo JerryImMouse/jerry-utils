@@ -12,18 +12,13 @@ public class DependencyCollection : IDependencyCollection
 {
     private Dictionary<Type, object> _dependencies;
 
-    private DependencyCollection(Dictionary<Type, object> dict, bool logTime = false)
+    private DependencyCollection(Dictionary<Type, object> dict)
     {
-        var rt = new Stopwatch();
-        rt.Start();
         _dependencies = dict;
-        rt.Stop();
-        if (logTime)
-            Console.WriteLine($"Initialized dep dict in {rt.Elapsed}");
     }
-    public static IDependencyCollection InitializeDependencies(Dictionary<Type, object> dict, bool logTime = false)
+    public static IDependencyCollection InitializeDependencies(Dictionary<Type, object> dict)
     {
-        return new DependencyCollection(dict, logTime);
+        return new DependencyCollection(dict);
     }
     
     public bool TryGetDependency(Type t, [NotNullWhen(true)] out object? instance)
@@ -53,31 +48,19 @@ public class DependencyCollection : IDependencyCollection
         return GetDependency(typeof(T));
     }
 
-    public void InjectDependencies(Dictionary<Type, object> dict, bool logTime = false)
+    public void InjectDependencies(Dictionary<Type, object> dict)
     {
-        var rt = Stopwatch.StartNew();
         _dependencies.AddRange(dict);
-        rt.Stop();
-        if (logTime)
-            Console.WriteLine($"Added dependencies in {rt.Elapsed}");
     }
 
-    public void InjectDependency(Type t, object instance, bool logTime = false)
+    public void InjectDependency(Type t, object instance)
     {
-        var rt = Stopwatch.StartNew();
         _dependencies.Add(t, instance);
-        rt.Stop();
-        if (logTime)
-            Console.WriteLine($"Added dependencies in {rt.Elapsed}");
     }
 
-    public void InjectDependency<T>(object instance, bool logTime = false)
+    public void InjectDependency<T>(object instance)
     {
-        var rt = Stopwatch.StartNew();
         _dependencies.Add(typeof(T), instance);
-        rt.Stop();
-        if (logTime)
-            Console.WriteLine($"Added dependencies in {rt.Elapsed}");
     }
 
     public IEnumerable<KeyValuePair<Type, object>> EnumerateDependencies()

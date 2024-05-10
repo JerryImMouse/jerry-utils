@@ -8,10 +8,10 @@ public interface IDependencyCollection
     bool TryGetDependency<T>([NotNullWhen(true)] out object? instance);
     object GetDependency(Type t);
     object GetDependency<T>();
-    void InjectDependencies(Dictionary<Type, object> dict, bool logTime = false);
-    void InjectDependency(Type t, object instance, bool logTime = false);
-    void InjectDependency<T>(object instance, bool logTime = false);
+    void InjectDependencies(Dictionary<Type, object> dict);
+    void InjectDependency(Type t, object instance);
+    void InjectDependency<T>(object instance);
     IEnumerable<KeyValuePair<Type, object>> EnumerateDependencies();
 
-    static abstract IDependencyCollection InitializeDependencies(Dictionary<Type, object> dict, bool logTime = false);
+    static abstract IDependencyCollection InitializeDependencies(Dictionary<Type, object> dict);
 }

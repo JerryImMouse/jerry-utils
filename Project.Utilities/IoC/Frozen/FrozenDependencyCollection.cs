@@ -14,9 +14,9 @@ public class FrozenDependencyCollection : IDependencyCollection
 {
     private FrozenDictionary<Type, object> _dependencies;
 
-    public static IDependencyCollection InitializeDependencies(Dictionary<Type, object> dict, bool logTime = false)
+    public static IDependencyCollection InitializeDependencies(Dictionary<Type, object> dict)
     {
-        return new FrozenDependencyCollection(dict, logTime);
+        return new FrozenDependencyCollection(dict);
     }
 
     public bool TryGetDependency(Type t, [NotNullWhen(true)] out object? instance)
@@ -52,7 +52,7 @@ public class FrozenDependencyCollection : IDependencyCollection
     /// <param name="dict"></param>
     /// <param name="logTime"></param>
     /// <exception cref="DependencyAlreadyExistsException"></exception>
-    public void InjectDependencies(Dictionary<Type, object> dict, bool logTime = false)
+    public void InjectDependencies(Dictionary<Type, object> dict)
     {
         var dependencies = _dependencies.ToDictionary();
         foreach (var kvp in dict)
@@ -66,12 +66,7 @@ public class FrozenDependencyCollection : IDependencyCollection
                 throw new DependencyAlreadyExistsException(kvp.Key);
             }
         }
-
-        var rt = Stopwatch.StartNew();
         _dependencies = dependencies.ToFrozenDictionary();
-        rt.Stop();
-        if (logTime)
-            Console.WriteLine($"Froze dictionary in {rt.Elapsed}");
     }
     /// <summary>
     /// Injects dependency into frozen collection<br/>
@@ -81,7 +76,7 @@ public class FrozenDependencyCollection : IDependencyCollection
     /// <param name="instance">Instance of that type</param>
     /// <param name="logTime">Log time of freezing internal dictionary</param>
     /// <exception cref="DependencyAlreadyExistsException">Thrown if same dependency has been already added to collection</exception>
-    public void InjectDependency(Type t, object instance, bool logTime = false)
+    public void InjectDependency(Type t, object instance)
     {
         var dependencies = _dependencies.ToDictionary();
 
@@ -93,12 +88,7 @@ public class FrozenDependencyCollection : IDependencyCollection
         {
             throw new DependencyAlreadyExistsException(t);
         }
-
-        var rt = Stopwatch.StartNew();
         _dependencies = dependencies.ToFrozenDictionary();
-        rt.Stop();
-        if (logTime)
-            Console.WriteLine($"Froze dictionary in {rt.Elapsed}");
     }
     /// <summary>
     /// Injects dependency into frozen collection<br/>
@@ -108,9 +98,9 @@ public class FrozenDependencyCollection : IDependencyCollection
     /// <param name="logTime">Log time of freezing internal dictionary</param>
     /// <typeparam name="T">Type to inject</typeparam>
     /// <exception cref="DependencyAlreadyExistsException">Thrown if same dependency has been already added to collection</exception>
-    public void InjectDependency<T>(object instance, bool logTime = false)
+    public void InjectDependency<T>(object instance)
     {
-        InjectDependency(typeof(T), instance, logTime);
+        InjectDependency(typeof(T), instance);
     }
 
     public IEnumerable<KeyValuePair<Type, object>> EnumerateDependencies()

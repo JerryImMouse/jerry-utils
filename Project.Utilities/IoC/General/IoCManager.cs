@@ -1,7 +1,10 @@
-﻿using System.Diagnostics.CodeAnalysis;
+﻿using System.Diagnostics;
+using System.Diagnostics.CodeAnalysis;
 using System.Reflection;
 using Project.Utilities.IoC.Frozen;
 using Project.Utilities.IoC.Interfaces;
+using Project.Utilities.Logging;
+using Project.Utilities.Logging.LogStructs;
 using Project.Utilities.Reflection;
 using Project.Utilities.TypeFactory;
 using Project.Utilities.Utility;
@@ -18,31 +21,65 @@ public static class IoCManager
     private static readonly ReflectionManager _reflection = ReflectionManager.Instance;
     public static event Action<Type[]>? TypesRegistered;
     public static event Action<Dictionary<Type, List<Type>>>? TypesInjected;
-    private static bool _log = true;
+    private static Logger _logger = default!;
+    private static bool _initialized = false;
 
-    #region AutoRegistration
-
-    public static void RegisterAllDependencies<TAttribute, TCollection>(Assembly[] assemblies, Type inheritor,
-        bool registerSelf = true) where TCollection : IDependencyCollection where TAttribute : Attribute
+    public static void Initialize()
+    {
+        if (_initialized)
+            throw new AlreadyInitializedException(nameof(IoCManager));
+        _logger = Logger.GetLogger("ioc", HandlerFlags.Console | HandlerFlags.File, LogLevel.Debug);
+        _initialized = true;
+    }
+    
+    #region AutoRegistrationModes
+    private static List<Type> GetAllMode(Type attrib, Type inheritor, bool registerSelf)
     {
         var inheritors = _reflection.FindTypesWithInheritor(inheritor).ToList();
-        var attribTypes = _reflection.FindTypesWithAttribute<TAttribute>();
+        var attribTypes = _reflection.FindTypesWithAttribute(attrib);
         inheritors.AddRange(attribTypes);
         if (registerSelf)
             inheritors.Add(inheritor);
-        RegisterTypesInternal<TCollection>(inheritors.ToArray());
+        return inheritors;
+    }
+
+    private static List<Type> GetAttributeMode(Type attrib)
+    {
+        return _reflection.FindTypesWithAttribute(attrib).ToList();
     }
     
-    public static void RegisterDependenciesInherits<TCollection>(Type inheritor, bool registerSelf = true) where TCollection : IDependencyCollection
+    private static List<Type> GetInheritMode(Type inheritor, bool registerSelf = true)
     {
         var types = _reflection.FindTypesWithInheritor(inheritor).ToList();
         if (registerSelf)
             types.Add(inheritor);
-        RegisterTypesInternal<TCollection>(types.ToArray());
+        return types;
     }
-    public static void RegisterDependencies<TAttribute, TCollection>(Assembly[] assemblies) where TCollection : IDependencyCollection where TAttribute : Attribute
+    #endregion
+
+    #region AutoRegistrationLogic
+
+    public static void InitializeDependencies<TCollection>(IoCSettings settings) where TCollection : IDependencyCollection
     {
-        var types = _reflection.FindTypesWithAttribute<TAttribute>();
+        if (!_initialized)
+            Initialize();
+        
+        // skip validation, settings already validated everything for us
+        var assemblies = settings.Assemblies;
+        var mode = settings.Mode;
+        var attrib = settings.Attribute;
+        var inheritor = settings.Inheritor;
+        var registerSelf = settings.Register;
+        
+        _reflection.LoadAssemblies(assemblies.ToArray());
+        
+        var types = mode switch
+        {
+            IoCMode.All => GetAllMode(attrib!, inheritor!, registerSelf),
+            IoCMode.Attribute => GetAttributeMode(attrib!),
+            IoCMode.Inheritor => GetInheritMode(inheritor!),
+            _ => throw new ArgumentException("Unrecognized IoC mode")
+        };
         RegisterTypesInternal<TCollection>(types.ToArray());
     }
 
@@ -61,7 +98,11 @@ public static class IoCManager
             
             dict.Add(curType, instance);
         }
-        _dependencyCollection = TCollection.InitializeDependencies(dict, _log);
+
+        var rt = Stopwatch.StartNew();
+        _dependencyCollection = TCollection.InitializeDependencies(dict);
+        rt.Stop();
+        _logger.Debug($"Initialized {dict.Count} dependency(ies) in {rt.Elapsed} with {typeof(TCollection).Name}");
         TypesRegistered?.Invoke(types);
     }
 
@@ -76,16 +117,22 @@ public static class IoCManager
 
     public static object Resolve(Type t)
     {
+        if (!_initialized)
+            throw new NotInitializedException(nameof(IoCManager));
         return _dependencyCollection.GetDependency(t);
     }
 
     public static bool TryResolve(Type t, [NotNullWhen(true)] out object? instance)
     {
+        if (!_initialized)
+            throw new NotInitializedException(nameof(IoCManager));
         return _dependencyCollection.TryGetDependency(t, out instance);
     }
 
     public static bool TryResolve<T>([NotNullWhen(true)] out object? instance)
     {
+        if (!_initialized)
+            throw new NotInitializedException(nameof(IoCManager));
         return _dependencyCollection.TryGetDependency<T>(out instance);
     }
 
@@ -95,6 +142,9 @@ public static class IoCManager
 
     public static void RegisterDependency<T>()
     {
+        if (!_initialized)
+            throw new NotInitializedException(nameof(IoCManager));
+        
         var instance = _typeFactory.CreateInstanceUnchecked<T>();
         if (instance == null)
             throw new UnableToCreateInstanceException(typeof(T));
@@ -102,22 +152,31 @@ public static class IoCManager
     }
     public static void RegisterDependency(Type t, object instance)
     {
+        if (!_initialized)
+            throw new NotInitializedException(nameof(IoCManager));
+        
         AssertClass(instance);
         _dependencyCollection.InjectDependency(t, instance);
     }
     public static void RegisterDependency<T>(object instance)
     {
+        if (!_initialized)
+            throw new NotInitializedException(nameof(IoCManager));
+        
         AssertClass(instance);
-        _dependencyCollection.InjectDependency<T>(instance, _log);
+        _dependencyCollection.InjectDependency<T>(instance);
     }
 
     public static void RegisterDependencies(Dictionary<Type, object> dict)
     {
+        if (!_initialized)
+            throw new NotInitializedException(nameof(IoCManager));
+        
         foreach (var kvp in dict)
         {
             AssertClass(kvp.Key);
         }
-        _dependencyCollection.InjectDependencies(dict, _log);
+        _dependencyCollection.InjectDependencies(dict);
     }
     /// <summary>
     /// Ensures passing object is a class instance
@@ -143,6 +202,9 @@ public static class IoCManager
     /// <exception cref="NoValidFieldsException">Thrown when there are no valid fields to inject to</exception>
     public static void InjectDependency(object injecting, object target)
     {
+        if (!_initialized)
+            throw new NotInitializedException(nameof(IoCManager));
+        
         var injectingType = injecting.GetType();
         var targetType = target.GetType();
         var fields = targetType.GetFieldsWithTypeAndAttribute<DependencyAttribute>(injectingType);
@@ -162,6 +224,9 @@ public static class IoCManager
     /// <exception cref="NoValidFieldsException">Thrown when there are no valid fields to inject to</exception>
     public static void InjectDependency<T>(object target)
     {
+        if (!_initialized)
+            throw new NotInitializedException(nameof(IoCManager));
+        
         var injectingInstance = Resolve<T>();
         InjectDependency(injectingInstance!, target);
     }
@@ -173,6 +238,9 @@ public static class IoCManager
     /// <param name="injected">Types that were injected</param>
     public static void InjectDependencies(object instance, out Dictionary<Type, List<Type>> injected)
     {
+        if (!_initialized)
+            throw new NotInitializedException(nameof(IoCManager));
+        
         var type = instance.GetType();
         var fields = type.GetFieldsWithAttribute<DependencyAttribute>();
         injected = new Dictionary<Type, List<Type>>();
@@ -191,6 +259,9 @@ public static class IoCManager
     /// </summary>
     public static void InjectDependencies()
     {
+        if (!_initialized)
+            throw new NotInitializedException(nameof(IoCManager));
+        
         var injected = new Dictionary<Type, List<Type>>();
         foreach (var dependency in _dependencyCollection.EnumerateDependencies())
         {
@@ -216,6 +287,11 @@ public static class IoCManager
 
     class NoValidFieldsException(Type t, Type s)
         : Exception($"Not found fields with type {s.Name} for injecting into {t.Name}");
+
+    class NotInitializedException(string name) 
+        : Exception($"Tried to use uninitialized object: {name}");
+    class AlreadyInitializedException(string name) 
+        : Exception($"Tried to initialize already initialized object: {name}");
 
     #endregion
 }
