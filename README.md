@@ -16,7 +16,7 @@ choose what realization you need to use in your case. Also provided simple IoCMa
 You can find its realization [here](https://github.com/JerryImMouse/jerry-utils/blob/master/Project.Utilities/IoC/General/IoCManager.cs)
 > ### Important Note<br>
 > IoCManager is being built using IoCManagerBuilder class, in coupe with InitializeDependencies method
-> So you need to build settings with builder and [README.md](README.md)pass them into InitializeDependencies method
+> So you need to build settings with builder and pass them into InitializeDependencies method
 
 
 Currently there are three realizations of IDependencyCollection interface:
