@@ -37,6 +37,30 @@ public class DynamicTypeFactory
         return instance;
     }
 
+    public object[] CreateMultipleUnchecked(Type[] types)
+    {
+        var objects = new object[types.Length];
+        for (var i = 0; i < types.Length; i++)
+        {
+            var inst = CreateInstanceUnchecked(types[i]);
+            objects[i] = inst ?? throw new NullTypeProvided(types[i]);
+        }
+        return objects;
+    }
+
+    public Dictionary<Type, object> CreateMultipleUncheckedToDict(Type[] types)
+    {
+        var dict = new Dictionary<Type, object>();
+        var inst = CreateMultipleUnchecked(types);
+        for (var i = 0; i < types.Length; i++)
+        {
+            dict.Add(types[i], inst[i]);
+        }
+        return dict;
+    }
+
     class NullTypeRegisterAttemptException(Type t) 
         : Exception($"Asked to register null type {t.Name}");
+    class NullTypeProvided(Type t) 
+        : Exception($"Asked to create null type {t.Name}");
 }
