@@ -9,6 +9,7 @@ public class Logger : IDisposable
 {
     // Need this to act as a proxy for some internal Serilog APIs related to message parsing.
     private readonly SLogger _sLogger = new LoggerConfiguration().CreateLogger();
+    private static Dictionary<string, Logger> _loggers = new();
     public List<ILogHandler> Handlers { get; }
     public string Name;
     private ReaderWriterLockSlim _handlersLock = new();
@@ -116,8 +117,13 @@ public class Logger : IDisposable
     
     public static Logger GetLogger(string name, HandlerFlags handlers, LogLevel? level = LogLevel.Debug)
     {
+        if (_loggers.TryGetValue(name, out var instance))
+            return instance;
+        
         var list = handlers.ToHandlers();
-        return new Logger(name, list, level);
+        var inst =  new Logger(name, list, level);
+        _loggers.Add(name, inst);
+        return inst;
     }
 
     private Logger(string name, IEnumerable<ILogHandler> handlers, LogLevel? level)
