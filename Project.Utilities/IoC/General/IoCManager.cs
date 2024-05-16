@@ -1,5 +1,6 @@
 ﻿using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
+using System.Reflection;
 using Project.Utilities.IoC.Frozen;
 using Project.Utilities.IoC.Interfaces;
 using Project.Utilities.Logging;
@@ -271,6 +272,24 @@ public static class IoCManager
         TypesInjected?.Invoke(injected);
     }
 
+    public static void InjectDependencies(object someInstance)
+    {
+        var instanceType = someInstance.GetType();
+        if (!instanceType.IsClass)
+            throw new NotAClassException(instanceType);
+
+        var fields = instanceType.GetFields(BindingFlags.Public | BindingFlags.Instance | BindingFlags.NonPublic)
+            .Where(f => f.GetCustomAttribute<DependencyAttribute>(false) != null);
+
+        foreach (var field in fields)
+        {
+            var fieldType = field.FieldType;
+            if (!TryResolve(fieldType, out var toInject))
+                throw new UnregisteredDependencyException(instanceType, fieldType);
+            field.SetValue(someInstance, toInject);
+        }
+    }
+
     #endregion
 
     #region Exceptions
@@ -291,6 +310,9 @@ public static class IoCManager
         : Exception($"Tried to use uninitialized object: {name}");
     class AlreadyInitializedException(string name) 
         : Exception($"Tried to initialize already initialized object: {name}");
+
+    class UnregisteredDependencyException(Type target, Type asked)
+        : Exception($"{target.Name} asked about unregistered dependency with type {asked.Name}");
 
     #endregion
 }
