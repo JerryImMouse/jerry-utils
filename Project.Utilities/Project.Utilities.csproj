@@ -6,6 +6,10 @@
         <Nullable>enable</Nullable>
         <RootNamespace>Project.Utilities</RootNamespace>
         <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+        <PackageId>JerryImMouse.Project.Utilities</PackageId>
+        <Version>0.0.2</Version>
+        <Authors>JerryImMouse</Authors>
+        <Company>JerryImMouse</Company>
     </PropertyGroup>
 
     <ItemGroup>

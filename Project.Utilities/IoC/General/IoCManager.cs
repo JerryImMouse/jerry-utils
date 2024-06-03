@@ -17,11 +17,11 @@ namespace Project.Utilities.IoC.General;
 public static class IoCManager
 {
     private static IDependencyCollection _dependencyCollection = default!;
-    private static readonly DynamicTypeFactory _typeFactory = DynamicTypeFactory.Instance;
-    private static readonly ReflectionManager _reflection = ReflectionManager.Instance;
+    private static readonly DynamicTypeFactory TypeFactory = DynamicTypeFactory.Instance;
+    private static readonly ReflectionManager Reflection = ReflectionManager.Instance;
     public static event Action<Type[]>? TypesRegistered;
     public static event Action<Dictionary<Type, List<Type>>>? TypesInjected;
-    private static Logger _logger = default!;
+    private static Logger? _logger;
     private static bool _initialized = false;
 
     public static void Initialize()
@@ -31,12 +31,15 @@ public static class IoCManager
         _logger = Logger.GetLogger("ioc", HandlerFlags.Console | HandlerFlags.File, LogLevel.Debug);
         _initialized = true;
     }
+
+    public static void SetHandler(Logger logger) => _logger = logger;
+    public static void RemoveHandler() => _logger = null;
     
     #region AutoRegistrationModes
     private static List<Type> GetAllMode(Type attrib, Type inheritor, bool registerSelf)
     {
-        var inheritors = _reflection.FindTypesWithInheritor(inheritor).ToList();
-        var attribTypes = _reflection.FindTypesWithAttribute(attrib);
+        var inheritors = Reflection.FindTypesWithInheritor(inheritor).ToList();
+        var attribTypes = Reflection.FindTypesWithAttribute(attrib);
         inheritors.AddRange(attribTypes);
         if (registerSelf)
             inheritors.Add(inheritor);
@@ -45,12 +48,12 @@ public static class IoCManager
 
     private static List<Type> GetAttributeMode(Type attrib)
     {
-        return _reflection.FindTypesWithAttribute(attrib).ToList();
+        return Reflection.FindTypesWithAttribute(attrib).ToList();
     }
     
     private static List<Type> GetInheritMode(Type inheritor, bool registerSelf = true)
     {
-        var types = _reflection.FindTypesWithInheritor(inheritor).ToList();
+        var types = Reflection.FindTypesWithInheritor(inheritor).ToList();
         if (registerSelf)
             types.Add(inheritor);
         return types;
@@ -71,7 +74,7 @@ public static class IoCManager
         var inheritor = settings.Inheritor;
         var registerSelf = settings.Register;
         
-        _reflection.LoadAssemblies(assemblies.ToArray());
+        Reflection.LoadAssemblies(assemblies.ToArray());
         
         var types = mode switch
         {
@@ -92,7 +95,7 @@ public static class IoCManager
             if (!curType.HasParameterlessConstructor())
                 throw new DependencyConstructorException(curType); 
             
-            var instance = _typeFactory.CreateInstanceUnchecked(curType);
+            var instance = TypeFactory.CreateInstanceUnchecked(curType);
             if (instance == null)
                 throw new UnableToCreateInstanceException(curType);
             
@@ -102,7 +105,7 @@ public static class IoCManager
         var rt = Stopwatch.StartNew();
         _dependencyCollection = TCollection.InitializeDependencies(dict);
         rt.Stop();
-        _logger.Debug($"Initialized {dict.Count} dependency(ies) in {rt.Elapsed} with {typeof(TCollection).Name}");
+        _logger?.Debug($"Initialized {dict.Count} dependency(ies) in {rt.Elapsed} with {typeof(TCollection).Name}");
         TypesRegistered?.Invoke(types);
     }
 
@@ -145,7 +148,7 @@ public static class IoCManager
         if (!_initialized)
             throw new NotInitializedException(nameof(IoCManager));
         
-        var instance = _typeFactory.CreateInstanceUnchecked<T>();
+        var instance = TypeFactory.CreateInstanceUnchecked<T>();
         if (instance == null)
             throw new UnableToCreateInstanceException(typeof(T));
         RegisterDependency<T>(instance);
