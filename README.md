@@ -7,6 +7,7 @@ Currently it contains:
 - **Simple reflection manager**
 - **TypeHelpers, CollectionExtensions**
 - **MathHelper, LockUtilities**
+- **[Http Utility](#http-utility)**
 > ### Important Note<br/>
 > All this utilities depends on each other, so make sure you copied all parts of this pack into your project.
 
@@ -43,3 +44,8 @@ If you want to know more you can checkout its realization [here](https://github.
 ## Logging
 This pack includes "advanced" logging system with ANSI colors for windows consoles and colorless if linux. Also supports logging straight to files, you can specify which handler to use by HandlerFlags enum.<br> If you want to know how to use it look [here](https://github.com/JerryImMouse/jerry-utils/blob/master/Project.Utilities/Examples/LoggingExample/ExampleProgram.cs)<br>
 [Logger Realization](https://github.com/JerryImMouse/jerry-utils/blob/master/Project.Utilities/Logging/Logger.cs)
+
+## Http Utility
+This one implements simple MainListener class that wraps HttpListener for ease of use, this also implements handlers group interface that can be inherited and used to create a class of handlers for http requests. HttpContext is a wrapper class that wraps around HttpListenerContext and provides a lot of tools to respond on http requests easily. 
+Created for my personal use as I needed it.
+<br>
