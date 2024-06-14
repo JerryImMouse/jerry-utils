@@ -1,13 +1,14 @@
 ﻿using System.Reflection;
+using Jerry.Utilities.Examples.IoCExample;
 using Jerry.Utilities.IoC.Frozen;
 using Jerry.Utilities.IoC.General;
 
-namespace Jerry.Utilities.Examples.IoCExample;
+namespace Jerry.Example.Examples.IoCExample;
 
-// lets pretend its a entry point for our program
+// let's pretend it's an entry point for our program
 public static class IoCExampleProgram
 {
-    public static void Main(string[] args)
+    public static void IoCMain(string[] args)
     {
         // creating a new builder instance to build settings for our IoCManager
         var builder = new IoCManagerBuilder();
@@ -33,7 +34,7 @@ public static class IoCExampleProgram
         // choose collection type to use and pass settings object to configure IoCManager
         IoCManager.InitializeDependencies<FrozenDependencyCollection>(settings);
         
-        // auto injecting all dependencies into each other
+        // auto-injecting all dependencies into each other
         IoCManager.InjectDependencies();
         
         // you also can chain that methods like this

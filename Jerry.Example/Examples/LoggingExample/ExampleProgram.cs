@@ -2,13 +2,13 @@
 using Jerry.Utilities.Logging.Handlers;
 using Jerry.Utilities.Logging.LogStructs;
 
-namespace Jerry.Utilities.Examples.LoggingExample;
+namespace Jerry.Example.Examples.LoggingExample;
 
-// lets pretend its a entry point for our program
+// let's pretend it's an entry point for our program
 public static class ExampleProgram
 {
     private static Logger _logger = default!;
-    public static void Main(string[] args)
+    public static void LoggerMain(string[] args)
     {
         // getting logger instance using static method GetLogger, don't create it straightly
         // here "program" means this logger is working inside our program class
