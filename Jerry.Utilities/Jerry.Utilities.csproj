@@ -6,9 +6,13 @@
         <Nullable>enable</Nullable>
         <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
         <PackageId>JerryImMouse.Project.Utilities</PackageId>
-        <Version>0.0.6</Version>
+        <Version>0.0.7</Version>
         <Authors>JerryImMouse</Authors>
         <Company>JerryImMouse</Company>
+        <RepositoryUrl>https://github.com/JerryImMouse/jerry-utils</RepositoryUrl>
+        <PackageLicenseFile>LICENSE.txt</PackageLicenseFile>
+        <PackageReadmeFile>README.md</PackageReadmeFile>
+        <Copyright>JerryImMouse</Copyright>
     </PropertyGroup>
 
     <ItemGroup>
@@ -16,5 +20,9 @@
       <PackageReference Include="Serilog" Version="4.0.0-dev-02167" />
       <PackageReference Include="TerraFX.Interop.Windows" Version="10.0.22621.6" />
     </ItemGroup>
-
+    
+    <ItemGroup>
+        <None Include="..\README.md" Pack="true" PackagePath="" />
+        <None Include="LICENSE.txt" Pack="true" PackagePath="" />
+    </ItemGroup>
 </Project>
