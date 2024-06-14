@@ -60,6 +60,14 @@ public class IoCManagerBuilder
         return IoCSettings.Build(_mode, _attribute, _inheritor, _registerInheritor, _assemblies);
     }
     #endregion
+
+    public IoCSettings BaseSettings()
+    {
+        return 
+            WithAttribute<RegisterDependencyAttribute>()
+            .WithMode(IoCMode.Attribute)
+            .Build();
+    }
 }
 
 public class IoCSettings

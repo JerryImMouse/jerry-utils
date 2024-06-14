@@ -67,6 +67,15 @@ public static class IoCManager
         if (!_initialized)
             Initialize();
         
+        // load entry assembly if nothing was provided
+        if (!Reflection.AssembliesLoaded)
+        {
+            var asm = Assembly.GetEntryAssembly();
+            if (asm == null)
+                throw new NullReferenceException("No assemblies were cached, IoC has nothing to use...");
+            Reflection.LoadAssemblies([asm]);
+        }
+        
         // skip validation, settings already validated everything for us
         var assemblies = settings.Assemblies;
         var mode = settings.Mode;
@@ -84,6 +93,12 @@ public static class IoCManager
             _ => throw new ArgumentException("Unrecognized IoC mode")
         };
         RegisterTypesInternal<TCollection>(types.ToArray());
+    }
+
+    public static void InitializeDependencies<TCollection>() where TCollection : IDependencyCollection
+    {
+        var settings = new IoCManagerBuilder().BaseSettings();
+        InitializeDependencies<TCollection>(settings);
     }
 
     private static void RegisterTypesInternal<TCollection>(Type[] types) where TCollection : IDependencyCollection

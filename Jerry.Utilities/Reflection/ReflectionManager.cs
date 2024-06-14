@@ -7,6 +7,7 @@ public class ReflectionManager
 {
     private readonly List<Assembly> _assemblies = new();
     private static ReflectionManager? _instance;
+    public bool AssembliesLoaded = false;
 
     public static ReflectionManager Instance
     {
@@ -27,6 +28,7 @@ public class ReflectionManager
     {
         _assemblies.AddRange(assemblies);
         EnsureGetAllTypesCache();
+        AssembliesLoaded = true;
     }
 
     public void EnsureGetAllTypesCache()
