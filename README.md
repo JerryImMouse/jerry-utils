@@ -50,4 +50,4 @@ Created for my personal use as I needed it.
 # Thanks
 As this repository recently became public, I'll leave thanks here for all people who made an impact to this package.  
 
-[Space Wizards Federation]("https://github.com/space-wizards") for giving me an idea and realization samples, logging and referenced IoC container were partially taken from their code.
+[Space Wizards Federation](https://github.com/space-wizards) for giving me an idea and realization samples, logging and referenced IoC container were partially taken from their code.
