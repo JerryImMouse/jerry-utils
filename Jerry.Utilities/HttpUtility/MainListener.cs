@@ -1,4 +1,6 @@
 using System.Net;
+using System.Text.Encodings.Web;
+using System.Text.RegularExpressions;
 using Jerry.Utilities.Logging;
 using Jerry.Utilities.Logging.LogStructs;
 
@@ -7,7 +9,7 @@ namespace Jerry.Utilities.HttpUtility;
 /// <summary>
 /// Wrapper around <see cref="HttpListener"/> for ease use, provides simple interface to "talk" with some program using HTTP or creating an api
 /// </summary>
-public class MainListener
+public sealed class MainListener
 {
     private HttpListener _nativeListener = new();
     public IHandlerGroup? HandlerGroup = null;
@@ -23,7 +25,7 @@ public class MainListener
         {
             var rawCtx = await _nativeListener.GetContextAsync();
             var ctx = new HttpContext(rawCtx);
-            Logger.Info($"Processing incoming connections from {ctx.RemoteEndPoint.Address}:{ctx.RemoteEndPoint.Port} to {ctx.RelativeUrl}");
+            Logger.Info($"Processing incoming connections from {ctx.RemoteEndPoint.Address}:{ctx.RemoteEndPoint.Port} to {Sanitize(ctx.RelativeUrl)}");
             
             // we are not waiting for task finishing
             Task.Run(() => ProcessContextAsync(ctx));
@@ -49,5 +51,11 @@ public class MainListener
     public void RegisterHandler(Func<HttpContext, Task<bool>> handler)
     {
         _handlers.Add(handler);
+    }
+
+    private string Sanitize(string str)
+    {
+        var reg = new Regex(@"[^\w\.@-]");
+        return reg.Replace(str, "_");
     }
 }
