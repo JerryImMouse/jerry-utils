@@ -6,7 +6,7 @@
         <Nullable>enable</Nullable>
         <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
         <PackageId>JerryImMouse.Project.Utilities</PackageId>
-        <Version>0.0.7</Version>
+        <Version>0.0.8</Version>
         <Authors>JerryImMouse</Authors>
         <Company>JerryImMouse</Company>
         <RepositoryUrl>https://github.com/JerryImMouse/jerry-utils</RepositoryUrl>
