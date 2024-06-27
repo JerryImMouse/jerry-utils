@@ -1,6 +1,7 @@
 using System.Net;
 using System.Text;
 using System.Text.Json;
+using Jerry.Utilities.Utility;
 using Method = Jerry.Utilities.HttpUtility.HttpMethod;
 namespace Jerry.Utilities.HttpUtility;
 
@@ -25,9 +26,15 @@ public class HttpContext
     #region Private
     private void ParseHttpMethod()
     {
-        if (!Enum.TryParse(_nativeContext.Request.HttpMethod, out Method method))
+        var method = _nativeContext.Request.HttpMethod;
+        
+        method = method
+            .ToLower()
+            .CapitalizeFirstLetter();
+        
+        if (!Enum.TryParse(method, out Method parsedMethod))
             HttpMethod = Method.Get;
-        HttpMethod = method;
+        HttpMethod = parsedMethod;
     }
     
     private Dictionary<string, string> GetHeaders()

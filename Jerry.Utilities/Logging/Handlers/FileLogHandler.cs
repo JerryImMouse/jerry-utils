@@ -25,16 +25,30 @@
 #endregion --- License ---
 
 using System.Text;
+using Jerry.Utilities.IoC.General;
 using Jerry.Utilities.Logging.Interfaces;
 using Jerry.Utilities.Logging.LogStructs;
 using Serilog.Events;
 
 namespace Jerry.Utilities.Logging.Handlers;
-
 public class FileLogHandler : ILogHandler, IDisposable
 {
     private readonly TextWriter _writer;
+    private static FileLogHandler? _instance;
 
+    public static FileLogHandler Instance
+    {
+        get
+        {
+            if (_instance != null) 
+                return _instance;
+                
+            _instance = new FileLogHandler("./logs.log");
+            return _instance;
+
+        }
+        set => _instance = value;
+    }
     public FileLogHandler(string path)
     {
         Directory.CreateDirectory(Path.GetDirectoryName(path)!);

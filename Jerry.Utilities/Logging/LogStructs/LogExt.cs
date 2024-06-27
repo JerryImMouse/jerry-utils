@@ -35,7 +35,7 @@ public static class LogExt
 
         if (flags.HasFlag(HandlerFlags.File))
         {
-            handlerInstances.Add(new FileLogHandler("./logs.log"));
+            handlerInstances.Add(FileLogHandler.Instance);
         }
         //TODO: loki handler for advanced logging
         
