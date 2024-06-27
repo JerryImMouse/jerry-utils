@@ -30,7 +30,7 @@ public class HttpContext
         
         method = method
             .ToLower()
-            .CapitalizeFirstLetter();
+            .CapitalizeLetter(0);
         
         if (!Enum.TryParse(method, out Method parsedMethod))
             HttpMethod = Method.Get;
